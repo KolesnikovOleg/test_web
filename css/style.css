@@ -1,0 +1,139 @@
+body {
+  display: grid;
+  grid-template-areas: "button_div backlog_div"
+  "table_div backlog_div";
+  height: 100vh;
+  margin: 0;
+  grid-template-rows: 3em 1fr;
+  grid-template-columns: 1fr 20%;
+}
+
+@media only screen and (max-device-width: 1024px) {
+	body {
+    display: grid;
+    grid-template-areas: "button_div"
+    "table_div";
+    height: 100vh;
+    margin: 0;
+    grid-template-rows: 3em 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  #backlog_div{
+    display: none;
+  }
+}
+
+#button_div {
+  grid-area: button_div;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+}
+
+#table_div {
+  overflow-x: auto;
+  grid-area: table_div;
+}
+
+#backlog_div {
+  grid-area: backlog_div;
+  background-color: rgb(220, 220, 220);
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  overflow-y: auto;
+}
+
+.backlog_task_div {
+  background-color: rgb(200, 200, 200);
+  height: 2.5em;
+  width: 96%;
+  margin: 0.2em;
+  font-size: 0.5em;
+  color: blue;
+}
+
+.table_task_div {
+  color: white;
+  background-color: rgb(64,199,129);
+  max-height: 50%;
+  width: 100%;
+  margin-bottom: 0.2em;
+}
+
+.table_task_div:hover::after {
+  content: attr(data-title);
+  position: absolute; /* Абсолютное позиционирование */
+  z-index: 1; /* Отображаем подсказку поверх других элементов */
+  background: rgba(0,42,167,0.6); /* Полупрозрачный цвет фона */
+  color: #fff; /* Цвет текста */
+  text-align: center; /* Выравнивание текста по центру */
+  font-family: Arial, sans-serif; /* Гарнитура шрифта */
+  font-size: 11px; /* Размер текста подсказки */
+  padding: 5px 10px; /* Поля */
+  border: 1px solid #333; /* Параметры рамки */
+}
+
+.week_button {
+  color: white;
+  text-decoration: none;
+  padding: 0.3em 0.9em ;
+  border-radius: 3px;
+  background: rgb(64,199,129);
+}
+
+table {
+  border-collapse: collapse;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+table tr:first-child td:not(:first-child) {
+  background: rgb(250,250,250);
+  border: 1px solid rgb(240, 240, 240);
+  padding: 10px 20px;
+}
+
+tr:first-child {
+  line-height: 0.5em;
+  min-height: 0.5em;
+  height: 0.5em;
+}
+
+td, th {
+  border: 1px solid rgb(190,190,190);
+  /*padding: 10px 20px;*/
+}
+
+th {
+  color: white;
+  background-color: rgb(64,199,129);
+  padding: 10px 20px;
+}
+
+td {
+  text-align: center;
+  /*background-color: rgb(235,235,235);*/
+}
+
+tr {
+  background-color: white;
+}
+
+.no_visible_cell{
+  border: none;
+  background-color: white;
+}
+
+#search_div {
+  padding-top: 0.5em;
+  margin: 0.2em;
+  height: 1.5em;
+  width: 96%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
