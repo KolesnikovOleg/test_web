@@ -203,11 +203,10 @@ const DAYS= 7;
         backlogTasks = tasks.filter(elem => !elem.executor);
         tasksWithExecutor = tasks.filter(elem => !!elem.executor);
 
+        setHeadTableText();
         showCurrentWeekTasks();
         initBacklog();
     }
-
-    setHeadTableText();
 
     //проблема с cors, не используя прокси сервер получаем непрозрачные данные
     const proxyUrl = '';//'https://cors-anywhere.herokuapp.com/';
