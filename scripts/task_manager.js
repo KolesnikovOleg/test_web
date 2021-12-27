@@ -12,9 +12,11 @@ const DAYS= 7;
     //находим понедельник текущей недели, для инициализации таблицы и массива дней недели
     function getMondayDate() {
         let nowDate = new Date();
+        //nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
         let currentDay = nowDate.getDay();
         let monday = new Date();
         monday.setDate((currentDay === 0) ? nowDate.getDate() - 7 : nowDate.getDate() - (currentDay - 1))
+        monday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate());
         return monday;
     }
 
@@ -44,7 +46,7 @@ const DAYS= 7;
         })
     }
 
-    //таск, который перетаскиваеттся из бэклога
+    //таск, который перетаскивается из бэклога
     let darggingTask = null;
     function onDragStart(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
@@ -97,13 +99,12 @@ const DAYS= 7;
     //задаем обработчики перетаскивания для ячеек таблицы
     function setupDragEventOnTable() {
         let rows = Array.from(table.rows);
-        rows.forEach((r, id) => {
-            if (id > 0) {
-                let rowId = id;
+        rows.forEach((r, rowId) => {
+            if (rowId > 0) {
                 let cells = Array.from(r.cells);
-                cells.forEach((c, id) => {
+                cells.forEach((c, colId) => {
                     c.ondrop = (e) => {
-                        onDrop(e, rowId, id);
+                        onDrop(e, rowId, colId);
                     }
                     c.ondragover = allowDrop;
                 })
@@ -134,7 +135,9 @@ const DAYS= 7;
             elem.date = new Date(elem.planStartDate);
             return elem;
         }).filter(elem => {
-            return elem.date >= currentWeekDays[0] && elem.date <= currentWeekDays[currentWeekDays.length - 1];
+            let lastWeekDay = currentWeekDays[currentWeekDays.length - 1];
+            let lastComp = new Date(lastWeekDay.getFullYear(), lastWeekDay.getMonth(), lastWeekDay.getDate() + 1);
+            return elem.date.getTime() >= currentWeekDays[0].getTime() && elem.date.getTime() < lastComp.getTime();
         })
 
         console.log(weekTasks);
@@ -208,11 +211,9 @@ const DAYS= 7;
         initBacklog();
     }
 
-    //проблема с cors, не используя прокси сервер получаем непрозрачные данные
-    const proxyUrl = '';//'https://cors-anywhere.herokuapp.com/';
     const userUrl = 'https://varankin_dev.elma365.ru/api/extensions/2a38760e-083a-4dd0-aebc-78b570bfd3c7/script/users?limit=15'
 
-    let fetch_users = fetch(proxyUrl + userUrl).then(blob => blob.json());
+    let fetch_users = fetch(userUrl).then(blob => blob.json());
     fetch_users
     .then(data => {
       console.log('get users', data);
@@ -226,7 +227,7 @@ const DAYS= 7;
     })
 
     let taskUrl = 'https://varankin_dev.elma365.ru/api/extensions/2a38760e-083a-4dd0-aebc-78b570bfd3c7/script/tasks';
-    let fetch_tasks = fetch(proxyUrl + taskUrl).then(blob => blob.json());
+    let fetch_tasks = fetch(taskUrl).then(blob => blob.json());
     fetch_tasks
     .then(data => {
       console.log('get tasks', data);
